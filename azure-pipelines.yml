@@ -24,5 +24,5 @@ steps:
     SourceFolder: ''
     Contents: '**/*.apk'
     TargetFolder: '$(build.artifactStagingDirectory)'
-  - task: PublishBuildArtifacts@1
+- task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
