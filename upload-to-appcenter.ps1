@@ -14,8 +14,4 @@ $body = @{
 
 $uri = "https://api.appcenter.ms/v0.1/apps/saurabhpathe/Android-App/uploads/releases"
 
-try {
-    Invoke-RestMethod -Uri $uri -Method Post -Headers @{"Content-Type"="application/json"} -Body $body
-} catch {
-    Write-Host "Error occurred: $($_.Exception.Message)"
-}
+Invoke-RestMethod -Uri $uri -Method Post -Headers @{"Content-Type"="application/json"} -Body $body
