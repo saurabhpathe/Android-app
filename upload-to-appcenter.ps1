@@ -1,4 +1,4 @@
-$token = "1529b44330a0ef6069a7991411330f9810f2457c"
+$token = "739256c4c5772f5c2840fa51d4f4912bf62be1c0"
 $file_path = "$env:System_ArtifactsDirectory/app-debug.apk"
 $app_name = "Android-App"
 $group = "Androidapp"
@@ -13,5 +13,10 @@ $body = @{
 } | ConvertTo-Json
 
 $uri = "https://api.appcenter.ms/v0.1/apps/saurabhpathe/Android-App/uploads/releases"
+
+# Debugging output
+Write-Host "Token: $token"
+Write-Host "URI: $uri"
+Write-Host "Body: $body"
 
 Invoke-RestMethod -Uri $uri -Method Post -Headers @{"Content-Type"="application/json"} -Body $body
