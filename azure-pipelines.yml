@@ -39,7 +39,7 @@ jobs:
     inputs:
       artifactName: 'drop'
       downloadPath: '$(System.ArtifactsDirectory)'
- - powershell: |
+- powershell: |
         $token = "739256c4c5772f5c2840fa51d4f4912bf62be1c0"
         $file_path = "$(System.ArtifactsDirectory)/app-debug.apk"
         $app_name = "Android-App"
