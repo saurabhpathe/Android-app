@@ -1,4 +1,4 @@
-$token = "06fcf25e01414f33fd4ea6117cccb85eb7f3189e"
+$token = "1529b44330a0ef6069a7991411330f9810f2457c"
 $file_path = "$env:System_ArtifactsDirectory/app-debug.apk"
 $app_name = "Android-App"
 $group = "Androidapp"
