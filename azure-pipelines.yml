@@ -4,44 +4,31 @@ trigger:
 pool:
   vmImage: 'macos-latest'
 
-jobs:
-- job: Build_Android
-  displayName: 'Build Android APK'
-  steps:
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      publishJUnitResults: false
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: 'assembleDebug'
-  - task: CopyFiles@2
-    displayName: 'Copy Files to: $(build.artifactStagingDirectory)'
-    inputs:
-      SourceFolder: ''
-      Contents: '**/*.apk'
-      TargetFolder: '$(build.artifactStagingDirectory)'
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: drop'
-
-- job: Deploy_Android
-  displayName: 'Deploy to App Center'
-  dependsOn: Build_Android # Make this job depend on the completion of the Build_Android job
-  pool:
-    vmImage: 'windows-latest'
-  steps:
-  - task: DownloadBuildArtifacts@0
-    inputs:
-      artifactName: 'drop'
-      downloadPath: '$(build.artifactStagingDirectory)'
-  - powershell: |
-      .\upload-to-appcenter.ps1
-    displayName: 'Upload APK to App Center'
+stages:
+- stage: Build_And_Deploy
+  jobs:
+  - job: Build_Android
+    displayName: 'Build Android APK'
+    steps:
+    - task: Gradle@2
+      inputs:
+        workingDirectory: ''
+        gradleWrapperFile: 'gradlew'
+        gradleOptions: '-Xmx3072m'
+        publishJUnitResults: false
+        testResultsFiles: '**/TEST-*.xml'
+        tasks: 'assembleDebug'
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(build.artifactStagingDirectory)'
+      inputs:
+        SourceFolder: ''
+        Contents: '**/*.apk'
+        TargetFolder: '$(build.artifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
 
 - stage: Deploy
   displayName: Deploy Debug and Release Apps to App Center
-  dependsOn: Build
   jobs:
     - deployment: Deploy_Android_Debug
       variables:
