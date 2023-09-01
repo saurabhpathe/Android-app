@@ -27,6 +27,7 @@ jobs:
 
 - job: Deploy_Android
   displayName: 'Deploy to App Center'
+  dependsOn: Build_Android # Make this job depend on the completion of the Build_Android job
   pool:
     vmImage: 'windows-latest'
   steps:
