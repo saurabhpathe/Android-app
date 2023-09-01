@@ -1,20 +1,9 @@
-# Define variables interactively
+# Define variables without values
 variables:
-- name: AppCenterApiToken
-  value: 739256c4c5772f5c2840fa51d4f4912bf62be1c0
-  prompt: true
-
-- name: AppCenterAppName
-  value: Android-App
-  prompt: true
-
-- name: DistributionGroupName
-  value: Androidapp
-  prompt: true
-
-- name: AzureDevOpsUsername
-  value: saurabhpathe
-  prompt: true
+- name: 739256c4c5772f5c2840fa51d4f4912bf62be1c0
+- name: Android-App
+- name: Androidapp
+- name: saurabhpathe
 
 stages:
 - stage: Build
@@ -46,12 +35,21 @@ stages:
       inputs:
         artifactName: 'drop'
         downloadPath: '$(System.ArtifactsDirectory)'
-    - script: |
-        curl -X POST -H "Content-Type: application/json" -d '{
-          "token": "$(AppCenterApiToken)",
-          "file_path": "$(System.ArtifactsDirectory)/app-debug.apk",
-          "app_name": "$(AppCenterAppName)",
-          "group": "$(DistributionGroupName)",
-          "release_notes": "Automated build from Azure DevOps"
-        }' https://api.appcenter.ms/v0.1/apps/$(AzureDevOpsUsername)/$(AppCenterAppName)/uploads/releases
+    - powershell: |
+        $AppCenterApiToken = Read-Host -Prompt "Enter your App Center API token"
+        $AppCenterAppName = Read-Host -Prompt "Enter your App Center app name"
+        $DistributionGroupName = Read-Host -Prompt "Enter your distribution group name"
+        $AzureDevOpsUsername = Read-Host -Prompt "Enter your Azure DevOps username"
+
+        # Use the entered values in the API call
+        $ApiUrl = "https://api.appcenter.ms/v0.1/apps/$AzureDevOpsUsername/$AppCenterAppName/uploads/releases"
+        $JsonBody = @{
+          "token" = $AppCenterApiToken
+          "file_path" = "$(System.ArtifactsDirectory)/app-debug.apk"
+          "app_name" = $AppCenterAppName
+          "group" = $DistributionGroupName
+          "release_notes" = "Automated build from Azure DevOps"
+        } | ConvertTo-Json
+
+        Invoke-RestMethod -Uri $ApiUrl -Method Post -Headers @{"Content-Type"="application/json"} -Body $JsonBody
       displayName: 'Upload APK to App Center'
