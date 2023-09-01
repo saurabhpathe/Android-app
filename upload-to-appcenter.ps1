@@ -4,19 +4,20 @@ $app_name = "Android-App"
 $group = "Androidapp"
 $release_notes = "Automated build from Azure DevOps"
 
+# Create a hashtable to store headers
+$headers = @{
+    "Content-Type" = "application/json"
+    "X-API-Token" = $token  # Include the API token in the X-API-Token header
+}
+
 $body = @{
-  token = $token
-  file_path = $file_path
-  app_name = $app_name
-  group = $group
-  release_notes = $release_notes
+  "file_path" = $file_path
+  "app_name" = $app_name
+  "group" = $group
+  "release_notes" = $release_notes
 } | ConvertTo-Json
 
 $uri = "https://api.appcenter.ms/v0.1/apps/saurabhpathe/Android-App/uploads/releases"
 
-# Debugging output
-Write-Host "Token: $token"
-Write-Host "URI: $uri"
-Write-Host "Body: $body"
-
-Invoke-RestMethod -Uri $uri -Method Post -Headers @{"Content-Type"="application/json"} -Body $body
+# Make the API request with headers
+Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body
