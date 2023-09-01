@@ -1,5 +1,5 @@
 $token = "06fcf25e01414f33fd4ea6117cccb85eb7f3189e"
-$file_path = "$env:System_ArtifactsDirectory/app-debug.apk"
+$file_path = "$env:build.artifactStagingDirectory/app-debug.apk"
 $app_name = "Android-App"
 $group = "Androidapp"
 $release_notes = "Automated build from Azure DevOps"
