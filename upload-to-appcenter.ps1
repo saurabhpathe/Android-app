@@ -1,4 +1,4 @@
-$token = "739256c4c5772f5c2840fa51d4f4912bf62be1c0"
+$token = "06fcf25e01414f33fd4ea6117cccb85eb7f3189e"
 $file_path = "$env:System_ArtifactsDirectory/app-debug.apk"
 $app_name = "Android-App"
 $group = "Androidapp"
@@ -17,7 +17,7 @@ $body = @{
   "release_notes" = $release_notes
 } | ConvertTo-Json
 
-$uri = "https://api.appcenter.ms/v0.1/apps/saurabhpathe/Android-App/uploads/releases"
+$uri = "https://api.appcenter.ms/v0.1/apps/saurabhAndroid/Android-App/uploads/releases"
 
 # Make the API request with headers
 Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body
